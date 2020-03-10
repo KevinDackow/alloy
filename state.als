@@ -11,7 +11,7 @@ sig UserGroupState {
 }
 
 sig FileSystemState {
-	fs: FileSystem
+	fs: one FileSystem
 }
 
 sig ProcessesState {
