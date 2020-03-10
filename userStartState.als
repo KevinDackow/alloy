@@ -4,18 +4,19 @@ open state
 --------------------------------------
 // Ensure the root user is in the root group.
 fact initialState {
-	first.etcPasswd[RootUser] = RootGroup
-	first.etcGroups[RootGroup] = RootUser
+	first.usrGrpState.etcPasswd[RootUser] = RootGroup
+	first.usrGrpState.etcGroups[RootGroup] = RootUser
 	all u: User - RootUser | one newUsergroup: Group - RootGroup | {
-		first.etcGroups[newUsergroup] = u
-		first.etcPasswd[u] = newUsergroup
+		first.usrGrpState.etcGroups[newUsergroup] = u
+		first.usrGrpState.etcPasswd[u] = newUsergroup
 	}
 	-- ensure all groups have exactly one member
 	all g: Group | {
-		one first.etcGroups[g]
+		one first.usrGrpState.etcGroups[g]
 	}
-	-- ensure there are no superfluous groups
-	#User = #Group
+	all u: User | one g: Group | {
+		u in first.usrGrpState.etcGroups[g]
+	}
 }
 
 --------------------------------------
@@ -25,7 +26,7 @@ fact initialState {
 pred userNotInPasswd {
 	some u: User | {
 		no g: Group | {
-			first.etcPasswd[u] = g
+			first.usrGrpState.etcPasswd[u] = g
 		} 
 	}
 }
@@ -33,28 +34,28 @@ pred userNotInPasswd {
 pred userNotInGroupOnInit {
 	some u: User | {
 		no grp: Group | {
-			first.etcGroups[grp] = u
+			first.usrGrpState.etcGroups[grp] = u
 		}
 	}
 }
 // All groups must have different users to start
 pred groupsNotDisjointOnInit {
 	some disj g1, g2: Group | {
-		first.etcGroups[g1] = first.etcGroups[g2]
+		first.usrGrpState.etcGroups[g1] = first.usrGrpState.etcGroups[g2]
 	}
 }
 
 // All groups must start with exactly one member
 pred groupSizeNotEqualOne {
 	some g: Group | {
-		#first.etcGroups[g] != 1
+		#first.usrGrpState.etcGroups[g] != 1
 	}
 }
 
 // RootGroup starts without RootUser or vice versa
 pred rootGroupNoRootUser {
-	first.etcGroups[RootGroup] != RootUser
-	first.etcPasswd[RootUser] != RootGroup
+	first.usrGrpState.etcGroups[RootGroup] != RootUser
+	first.usrGrpState.etcPasswd[RootUser] != RootGroup
 }
 
 --------------------------------------

@@ -19,7 +19,7 @@ sig FileSystem {
   // parent is the inverse of contents
   parent = ~contents
 }
-
+/*
 // Moving doesn't add or delete any file system objects
 moveOkay: check {
   all fs, fs': FileSystem, x: FSObject, d:Dir |
@@ -43,3 +43,4 @@ removeAllSame: check {
   all fs, fs1, fs2: FileSystem, f: File |
     remove[fs, fs1, f] && removeAll[fs, fs2, f] => fs1.live = fs2.live
 } for 5
+*/
