@@ -7,17 +7,19 @@ open filesystem
 
 sig UserGroupState {
 	etcGroups: Group -> User, -- state of the /etc/groups file
-	etcPasswd: User -> one Group, -- state of the /etc/passwd file
+	etcPasswd: User -> one Group -- state of the /etc/passwd file
 }
 
 sig FileSystemState {
 	fs: one FileSystem
 }
 
-sig ProcessesState {
+sig PermissionsState {
+	permissions: FSObject -> OGP -> RWX -- FSObject has owner/grp/pub permissions
 }
 
 sig State {
 	usrGrpState: one UserGroupState,
-	fsState: one FileSystemState
+	fsState: one FileSystemState,
+	permState: one PermissionsState
 }

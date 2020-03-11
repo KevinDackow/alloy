@@ -28,24 +28,42 @@ abstract sig validStateTransition {
 	s': State
 }
 
-sig usermodStateTransition extends validStateTransition { } {
-	usermod[User, User, Group, s, s']
+// These predicates are so you can make sure only one sub state is changed
+pred changeOnlyUsrGrp[s, s': State] {
 	s.fsState = s'.fsState
+	s.permState = s'.permState
+}
+
+pred changeOnlyFS[s, s': State] {
+	s.usrGrpState = s'.usrGrpState
+	s.permState = s'.permState
+}
+
+pred changeOnlyPerm[s, s': State] {
+	s.usrGrpState = s'.usrGrpState
+	s.fsState = s'.fsState
+}
+
+// The valid transitions
+sig usermodStateTransition extends validStateTransition { } {
+	// should only affect s.usrGrpState
+	usermod[User, User, Group, s, s']
+	changeOnlyUsrGrp[s, s']
 }
 
 sig moveStateTransition extends validStateTransition { } {
 	moveStateful[FSObject, Dir, s, s']
-	s.usrGrpState = s'.usrGrpState
+	changeOnlyFS[s, s']
 }
 
 sig removeStateTransition extends validStateTransition { } {
 	removeStateful[FSObject, s, s']
-	s.usrGrpState = s'.usrGrpState
+	changeOnlyFS[s, s']
 }
 
 sig removeAllStateTransition extends validStateTransition { } {
 	removeAllStateful[Dir, s, s']
-	s.usrGrpState = s'.usrGrpState
+	changeOnlyFS[s, s']
 }
 
 ---- ENSURING EXACTLY ONE VALID TRANSITION BETWEEN STATES ----
@@ -67,14 +85,16 @@ pred transitionsNotIndependent {
 		// If there is exactly one change, the first disjunct is true. Thus, the pred is correctly false.
 		// If there are multiple changes. the first and second disjuncts are false. Thus, the pred is correctly true. 
 		// If there are no changes, the second disjunct is true. Thus, the pred is correctly false.
-		not (
-			(
-				( not ( ( before.fsState != after.fsState ) iff ( before.usrGrpState != after.usrGrpState ) ) ) 	-- fsStateChanged XOR usrGrpStateChanged
-				or ( 
+		let fsChange = (before.fsState != after.fsState), 
+			usrGrpChange = (before.usrGrpState != after.usrGrpState),
+			permChange = (before.permState != after.permState) | {
+			let fsXORusrGrp = (not (fsChange iff usrGrpChange)) | {
+				let fsXORusrGrpXORperm = (not (fsXORusrGrp iff permChange)) | {
+					fsXORusrGrpXORperm or 
 					(before.fsState = after.fsState) and (before.usrGrpState = after.usrGrpState) -- no changes
-				)
-			)
-		)
+				}
+			}
+		}
 	}
 }
 

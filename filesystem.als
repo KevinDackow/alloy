@@ -1,6 +1,9 @@
 open permissions
 // File system objects
-abstract sig FSObject { }
+abstract sig FSObject { 
+	owner: User,
+	grp: Group
+}
 sig File, Dir extends FSObject { }
 
 // A File System
@@ -17,6 +20,7 @@ sig FileSystem {
 }
 
 ---- STATELESS FUNCTIONS TO MODIFY ----
+
 // Move x to directory d
 pred move [fs, fs': FileSystem, x: FSObject, d: Dir] {
   (x + d) in fs.live
@@ -37,5 +41,3 @@ pred removeAll [fs, fs': FileSystem, x: FSObject] {
   let subtree = x.*(fs.contents) |
       fs'.parent = fs.parent - subtree->(subtree.(fs.parent))
 }
-
-
