@@ -117,6 +117,7 @@ run transitionsNotIndependent
 check moreGroupsThanUsersAlways
 check sameNumberGroupsAndUsersInit
 //	expected: No instance found.
+run passwdGroupNotInGrpsFile
 run userNotInPasswd
 run userNotInGroupOnInit
 run groupsNotDisjointOnInit

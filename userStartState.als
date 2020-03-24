@@ -19,9 +19,23 @@ fact initialState {
 	}
 }
 
+fact groupsAndPasswdsSynchronized {
+	all s: State, u: User, g: Group | {
+		g = s.usrGrpState.etcPasswd[u] =>
+			u in s.usrGrpState.etcGroups[g]
+	}
+}
 --------------------------------------
 --- Invariants. Expected: No instance found.
 --------------------------------------
+// true if user can have a passwd entry which is not a group they are in
+pred passwdGroupNotInGrpsFile {
+	some s: State, u: User, grp: Group | {
+		grp = s.usrGrpState.etcPasswd[u]
+		u not in s.usrGrpState.etcGroups[grp]
+	}
+}
+
 // All users must have passwd entries
 pred userNotInPasswd {
 	some u: User | {

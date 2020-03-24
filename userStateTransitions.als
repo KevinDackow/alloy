@@ -9,21 +9,22 @@ pred usermod[caller, targetUser: User, targetGroup: Group, before, after: State]
 		after.usrGrpState.etcGroups[targetGroup] = before.usrGrpState.etcGroups[targetGroup] + targetUser
 	else {
 		// ensure the targetGroup doesn't change
-		before.usrGrpState.etcGroups[targetGroup] = after.usrGrpState.etcGroups[targetGroup]
+		after.usrGrpState.etcGroups[targetGroup] = before.usrGrpState.etcGroups[targetGroup]
 	}
 	// ensure the rest of the things remain the same.
 	all u: User | {
- 		before.usrGrpState.etcPasswd[u] = after.usrGrpState.etcPasswd[u]
+ 		after.usrGrpState.etcPasswd[u] = before.usrGrpState.etcPasswd[u]
 	}
 	all g: Group - targetGroup | {
- 		before.usrGrpState.etcGroups[g] = after.usrGrpState.etcGroups[g]
+ 		after.usrGrpState.etcGroups[g] = before.usrGrpState.etcGroups[g]
 	}
 }
-
 
 --------------------------------------
 --- usermod tests. Expected: No instance found.
 --------------------------------------
+
+
 // true if root privleged users cannot add other users to groups
 pred userCannotBeAddedToGroupByUserWithRootPrivileges {
 	some rootPriv, target: User | some before: State, after: before.next | some targetGroup: Group | {
