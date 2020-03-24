@@ -7,7 +7,7 @@ abstract sig FSObject {
 sig File, Dir extends FSObject { }
 
 // A File System
-sig FileSystem {
+one sig FileSystem {
   live: set FSObject,
   root: Dir & live,
   parent: (live - root) ->one (Dir & live),

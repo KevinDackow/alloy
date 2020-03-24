@@ -23,3 +23,16 @@ sig State {
 	fsState: one FileSystemState,
 	permState: one PermissionsState
 }
+
+// Make sure that these s
+fact statePiecesExistWhenOwned {
+	all ug: UserGroupState | some s: State {
+		s.usrGrpState = ug
+	}
+	all fs: FileSystemState | some s: State {
+		s.fsState = fs
+	}
+	all p: PermissionsState | some s: State {
+		s.permState = p
+	}
+}
