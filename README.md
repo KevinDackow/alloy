@@ -31,11 +31,11 @@ I have created a signature which contains the configuration of a MySQL Server. H
 	one sig FILE, SELECT, INSERT, UPDATE, DELETE extends MySQLPriv {}
 	
 	sig MySQLServerConf {
-		local_infile: bool, 
 		user: User,
+		local_infile: bool, 
 		secure_file_priv: Dir,
 		user_accounts: MySQLUser -> one Password,
-		privs: MySQLUser -> MySQLPriv,
+		privs: MySQLUser -> MySQLPriv
 	}
 
 
