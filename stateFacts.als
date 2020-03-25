@@ -28,6 +28,7 @@ abstract sig validStateTransition {
 } {
 	s' = s.next
 }
+
 // These predicates are so you can make sure only one state piece is changed
 pred dontChangePermissions[s, s': State] {
 	s'.permState = s.permState

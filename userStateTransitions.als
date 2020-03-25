@@ -4,13 +4,8 @@ open userStartState
 --------------------------------------
 // the functionality of calling usermod -a -G targetGroup targetUser
 pred usermod[caller, targetUser: User, targetGroup: Group, before, after: State] {
-	caller in before.usrGrpState.etcGroups[RootGroup] => 
-		// perform usermod iff caller has root permissions
-		after.usrGrpState.etcGroups[targetGroup] = before.usrGrpState.etcGroups[targetGroup] + targetUser
-	else {
-		// ensure the targetGroup doesn't change
-		after.usrGrpState.etcGroups[targetGroup] = before.usrGrpState.etcGroups[targetGroup]
-	}
+	caller in before.usrGrpState.etcGroups[RootGroup] -- if this is false then you don't have permissions to do this
+	after.usrGrpState.etcGroups[targetGroup] = before.usrGrpState.etcGroups[targetGroup] + targetUser
 	// ensure the rest of the things remain the same.
 	all u: User | {
  		after.usrGrpState.etcPasswd[u] = before.usrGrpState.etcPasswd[u]
@@ -23,8 +18,6 @@ pred usermod[caller, targetUser: User, targetGroup: Group, before, after: State]
 --------------------------------------
 --- usermod tests. Expected: No instance found.
 --------------------------------------
-
-
 // true if root privleged users cannot add other users to groups
 pred userCannotBeAddedToGroupByUserWithRootPrivileges {
 	some rootPriv, target: User | some before: State, after: before.next | some targetGroup: Group | {
