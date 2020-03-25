@@ -46,5 +46,6 @@ I will now explain why I included each of these specific components. First, note
 * `secure_file_priv` - A bit lighter weight than `local_infile=False`, this restricts the MySQL User to being able to read only files located within the specified directory.
 * `user_accounts` - Stores user accounts and passwords. For the sake of this project, I have assumed that unset/default passwords are necessarily unsecure, while passwords set by the user are necessarily secure.
 * `privs` - The MySQL Privileges that a MySQL User has.
+
 ### SQLi
 I will define that a SQL Injection attack is successful iff an external user is able to access files which should not be accessible to a non-privileged MySQL *or* Linux user. That is, by default, we will say that anyone on the web should be able to access exacly one thing: the data in the database. If they are able to access anything else, without some dramatic error on the part of the sysadmin (e.g., giving an external user root privileges intentionally) then we have a vulnerability. 
