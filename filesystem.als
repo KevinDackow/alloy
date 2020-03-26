@@ -20,7 +20,6 @@ one sig FileSystem {
 }
 
 ---- STATELESS FUNCTIONS TO MODIFY ----
-
 // Move x to directory d
 pred move [fs, fs': FileSystem, x: FSObject, d: Dir] {
   (x + d) in fs.live

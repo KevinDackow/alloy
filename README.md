@@ -25,19 +25,21 @@ The files are organized as follows:
 ## MySQL Server
 ### Initial Comments
 The bulk of this project is the MySQL Server. I have heavily referenced [this site](https://www.acunetix.com/websitesecurity/securing-mysql-server-ubuntu-16-04-lts/), which details common vulnerabilites in MySQL Server configurations. 
-### Configuration
-I have created a signature which contains the configuration of a MySQL Server. Here it is:
+### Server & Configuration
+I have created a signature which corresponds to a running MySQL Server. It contains information about users as well as a static configuration. The basic idea is that the MySQL Server is spun up with the provided configuration, and if we want to change the configuration we would have to restart the server, just like a real MySQL Server. The configuration and server sigs are represented here:
 
-	one sig FILE, SELECT, INSERT, UPDATE, DELETE extends MySQLPriv {}
-	
-	sig MySQLServerConf {
+	one sig MySQLServerConf {
 		user: User,
-		local_infile: bool, 
+		local_infile: bool,
 		secure_file_priv: Dir,
+	}
+
+	sig MySQLServer {
+		data: Dir,
+		config: one MySQLServerConf,
 		user_accounts: MySQLUser -> one Password,
 		privs: MySQLUser -> MySQLPriv
 	}
-
 
 I will now explain why I included each of these specific components. First, note that there are two kinds of users: Linux Users and MySQL Users. Linux Users are traditional users on a Linux system (e.g., `root`, `kevin`), whereas MySQL Users are users *of the database*. I will always state in this portion of the document whether it is a MySQL User or Linux User.
 

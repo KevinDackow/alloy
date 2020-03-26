@@ -14,7 +14,6 @@ pred permissionToModify[u: User, f: FSObject, s: State] {
 pred moveStateful [x: FSObject, d: Dir, s, s': State] {
 	move[s.fsState.fs, s'.fsState.fs, x, d]
 }
-
 pred moveWithPerm [u: User, x: FSObject, d: Dir, s, s': State] {
 	permissionToModify[u, x, s] and moveStateful[x, d, s, s']
 }
@@ -23,7 +22,6 @@ pred moveWithPerm [u: User, x: FSObject, d: Dir, s, s': State] {
 pred removeStateful [x: FSObject, s, s': State] {
  	remove[s.fsState.fs, s'.fsState.fs, x]
 }
-
 pred removeWithPerm [u: User, x: FSObject, d: Dir, s, s': State] {
 	permissionToModify[u, x, s] and removeStateful[x, s, s']
 }
@@ -32,7 +30,6 @@ pred removeWithPerm [u: User, x: FSObject, d: Dir, s, s': State] {
 pred removeAllStateful [x: FSObject, s, s': State] {
 	removeAll[s.fsState.fs, s'.fsState.fs, x]
 }
-
 pred removeAllWithPerm [u: User, x: FSObject, d: Dir, s, s': State] {
 	permissionToModify[u, x, s] and removeAllStateful[x, s, s']
 }
