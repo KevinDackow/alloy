@@ -46,7 +46,7 @@ I will now explain why I included each of these specific components. First, note
 * `user` - This is the *Linux* user who is the owner of the MySQL Server process.
 * `local_infile` - This flag indicates what MySQL users with the `FILE` permission are allowed to access. If it is set to true, then a MySQL User (with `FILE` permission) is allowed to read any files on the computer that the Linux User who is running the MySQL Server process has read access to. If it is set to False, then MySQL Users are not allowed to read local files.
 * `secure_file_priv` - A bit lighter weight than `local_infile=False`, this restricts the MySQL User to being able to read only files located within the specified directory.
-* `user_accounts` - Stores user accounts and passwords. For the sake of this project, I have assumed that unset/default passwords are necessarily unsecure, while passwords set by the user are necessarily secure.
+* `user_accounts` - Stores user accounts and passwords. For the sake of this project, I have assumed that unset/default passwords are necessarily unsecure, while passwords set by the user are necessarily secure, unless it is not unique. (E.g., if user1 and user2 both have the same password, user2 can sign into user1)
 * `privs` - The MySQL Privileges that a MySQL User has.
 
 ### SQLi
