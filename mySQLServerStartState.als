@@ -7,13 +7,3 @@ fact configFilesAreStatic {
 		s.mysqlState.config = first.mysqlState.config
 	}
 }
-
-// There exists a MySQL DATA directory.
-pred initDataDir {
-	one data: Dir | {
-		data = first.mysqlState.server.data
-		first.permState.permissions[data] = 
-	}
-}
-
-pred 

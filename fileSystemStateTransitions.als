@@ -9,7 +9,6 @@ pred permissionToModify[u: User, f: FSObject, s: State] {
 		(perms[PublicPerm] = Write) 					 -- if the public has write, then we satisfy this predicate
 	}
 }
-
 // Move x to directory d
 pred moveStateful [x: FSObject, d: Dir, s, s': State] {
 	move[s.fsState.fs, s'.fsState.fs, x, d]
