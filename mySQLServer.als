@@ -8,7 +8,7 @@ sig BadPassword extends Password {}
 sig GoodPassword extends Password {}
 // Privileges
 abstract sig MySQLPriv {}
-one sig FILE, SELECT, INSERT, UPDATE, DELETE. GRANT, DROP extends MySQLPriv {}
+one sig FILE, SELECT, INSERT, UPDATE, DELETE, GRANT, DROP extends MySQLPriv {}
 
 // user
 sig MySQLUser {}
