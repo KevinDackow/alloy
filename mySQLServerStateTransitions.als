@@ -21,3 +21,7 @@ pred revoke[caller, target: MySQLUser, targetPriv: MySQLPriv, before, after: Sta
 	targetPriv in before.mysqlState.server.privs[caller]
 	targetPriv not in after.mysqlState.server.privs[target]
 }
+
+// TODO add transition to change data directory
+
+// TODO add concept of an external user connecting to the server
